@@ -1,0 +1,94 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Quantum Random Number Generation and Applications of Monte Carlo Simulations and Machine Learning to Finance}
+\author{Yushi Zhao\\Professor: Dr. Rupak Chatterjee, Financial Engineering Division, Stevens Institute of Technology}
+\date{February 2017}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{natbib}
+\usepackage{graphicx}
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+    \subsection{Random Number Generators (RNG)}
+    One of the main advantages of the quantum world is the ability for quantum systems to
+produce true random numbers as opposed to the pseudo and quasi random numbers generated
+by classical deterministic systems. The use of Monte Carlo numerical simulations for
+stochastic processes is widespread in physics, mathematics, engineering, and computational
+finance. These simulations depend upon the availability of large amounts (tens of millions)
+of random numbers. Random numbers are also crucial to cryptography as well as various machine learning algorithms. In this project, we analyze a true random number generator (TRNG) created at the Center for Distributed Quantum Computing at the Stevens Institute of Technology.
+
+    \subsection{Statistical Tests}
+    Random number generation can be divided into methods that are either deterministic
+based on some mathematical algorithm or non-deterministic coming from an actual physical
+process~\citep{haahr1999introduction}. Algorithmic methods are subdivided into pseudo random number generators
+(PRNG) or quasi random number generators (QRNG). PRNGs are the most commonly used
+method for simulation and cryptography. PNRGs all start with an initial value called a seed. Starting with the exact same seed, one is able to generate identical sequences of random numbers, hence the name pseudo (as opposed to
+being truly random) and the categorization of deterministic. Even though PRNGs are important
+because of their speed in number generation, almost all of them fail basic non-random
+pattern detection tests~\citep{sen2006quasi} such as
+
+-\textit{Strong long range correlations} : Autocorrelation is a major problem for PRNGs where successive random numbers in a given sequence are correlated to ones that came earlier in the sequence. True random numbers should have no memory of previously generated numbers
+and be independent and identically distributed.
+
+-\textit{Periodicity} : All PRNGs will eventually repeat themselves after a certain number of steps
+in a sequence. Even though may approximate the length of the period (and these can be
+relatively large), certain seeds may lead to shorter than expected periods.
+
+-\textit{Discrepancy}: PRNGS are known to not have low-discrepancy in the sense that they may
+tend to 'bunch up' around certain points rather than be smoothly distributed in the desired
+range. Another way to say this is that the relative distances between where certain points
+occur are distributed more frequently from those in a truly random sequence. This can also
+lead to poor dimensional distribution properties for multi-dimensional PRNGs.
+
+Quasi random number generators (QRNG) try to solve the discrepancy problem of PRNGs
+by artificially creating low-discrepancy sequences that are more equidistributed according to
+the measure of the space~\citep{joy1996quasi}. This leads to better (lower) discrepancy properties than PRNGs for
+shorter sequences of random numbers. This is very useful for rare event generation (occurring
+in the tails of distributions) and high dimensional simulation. Yet, by their nature QRNGs
+have high autocorrelation and they provide a purely deterministic sub-random sequence of
+numbers that have to be used with care.
+
+    Various statistical tests have been designed to determine the quality of a set of random numbers. The most accepted test is the National Institute of Standards and Technology (NIST) Statistics Test Suite~\citep{soto1999statistical}~\citep{rukhinnist}. This test suite contains 15 packages: frequency, block frequency, cumulative sums, runs, long runs, template matching, overlapping template matching, Maurer's universal statistical, approximate entropy, random excursions, Lempel-Ziv complexity, linear complexity and serial.
+    Dieharder Test Suite is also popular and well-designed~\citep{brown2013dieharder}. It includes all the legacy Diehard tests: birthday spacing, overlapping permutations, binary rank, Bitstream, OPSO, OQSO (Overlapping-Quadruples-Sparse-Occupancy), DNA, Count the 1’s, parking lot, minimum distance, 3D Spheres, squeeze, overlapping sums, runs and craps~\citep{marsaglia2008marsaglia}.
+    Thus, we plan to use both  NIST and Dieharder to test our quantum TRNG.
+
+
+    \subsection{Competitors}
+    Currently, there are several companies and labs that focus on quantum random number generation. \textit{ID Quantique} is the first company to develop a commercial quantum random number generator in 2001. The company used an optical quantum process as a random source to generate quantum random numbers. Their method can produce a high bit rate of 4 to 16 Mbits/sec of truly random bits. ID Quantique also produces a quantum key distribution protocol based on their random numbers~\citep{quantique2010random}.
+    The Australia National University(ANU) has a project that generates random numbers by using a laser. The hardware is constantly generating random bits at a rate of 5.7Gbits/s. This is one of the fastest random number generation methods in the world. Random numbers generated from ANU can pass both NIST and Dieharder tests. As ANU provides these random numbers to the public, we plan to apply both test suites to their random numbers to conform their claim.
+
+
+    \subsection{Quantum RNG in Stevens}
+    The Stevens quantum random number generator uses single photons where the output photon modes are truly random an lie within a certain predetermined integer range. Our work is to obtain true random numbers from these modes. We will transform these quantum random sequences to specific distributions as uniform or Gaussian. Both NIST and Diehard tests will be performed for statistical analysis. Furthermore, the speed and efficiency of our TRNG will be analyzed. The Stevens TRNG will also be extended to a multidimensional and correlated random number generation.
+
+    \subsection{Workflow}
+    See Figure \ref{fig:Workflow}.
+        \begin{figure}[!h]
+        \centering
+        \includegraphics[scale=0.4]{FE800_workflow_v4.png}
+        \caption{Workflow}
+        \label{fig:Workflow}
+        \end{figure}
+
+
+\section{Application}
+
+    \subsection{Monte Carlo Simulation}
+    Monte Carlo simulation are used for both derivative valuation and risk analysis. The current regulatory framework of Basel III, CVA, CCAR, all demand massive simulations of a bank's financial positions feeding an endless need for random numbers for such multidimensional simulations. We plan to apply the Stevens TRNG to price and risk analyze barrier type path dependent options~\citep{el1998simulating}.
+
+    \subsection{Machine Learning}
+    The Particle Swarm Optimization (PSO) method was first intended for simulating social behavior~\citep{kennedy1997particle} but also gained interest from multiple other fields~\citep{poli2007particle}. This algorithm includes a critical random number component. In the paper~\citep{ding2014comparison}, a variety of PRNGs and QRNGs were tested. We plan to add our Stevens TRNG to this test to show that it will outperform both PRNGs and QRNGs.
+
+    \subsection{Cyber Security}
+    We plan to implement the BB84~\citep{bennett1984quantum} standard protocol for Quantum Key Distribution (QKD). Along with this implementation, our TRNG can also be used in a privacy amplification process~\citep{bennett1995generalized}.
+
+
+\clearpage{}
+\bibliographystyle{}
+\bibliography{references}
+\end{document}
